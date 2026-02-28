@@ -34,13 +34,19 @@ export async function handler(event, context) {
   const url = process.env.URL || process.env.DEPLOY_URL || 'https://example.netlify.app'
   const baseUrl = url.replace(/\/$/, '')
 
-  const supabaseUrl = process.env.SUPABASE_URL
-  const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY
-  if (!supabaseUrl || !supabaseKey) {
+  const supabaseUrl = (process.env.SUPABASE_URL || '').trim()
+  const supabaseKey = (process.env.SUPABASE_SERVICE_ROLE_KEY || '').trim()
+  const validUrl = supabaseUrl.startsWith('http://') || supabaseUrl.startsWith('https://')
+  if (!validUrl || !supabaseKey) {
     return {
       statusCode: 500,
       headers,
-      body: JSON.stringify({ error: 'Server misconfiguration: missing Supabase env' }),
+      body: JSON.stringify({
+        error: 'Server misconfiguration: invalid or missing Supabase env',
+        details: !validUrl
+          ? 'SUPABASE_URL must be a valid URL (e.g. https://xxxx.supabase.co). Set it in Netlify → Site → Environment variables.'
+          : 'SUPABASE_SERVICE_ROLE_KEY is missing. Set it in Netlify → Site → Environment variables.',
+      }),
     }
   }
 

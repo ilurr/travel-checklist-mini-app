@@ -23,9 +23,10 @@ Open `http://localhost:5173`.
 ## Deploy (Netlify)
 
 1. Push this repo to GitHub and connect it in Netlify.
-2. Set environment variables in Netlify:
-   - `SUPABASE_URL` – your Supabase project URL
-   - `SUPABASE_SERVICE_ROLE_KEY` – Supabase service role key (for server-side only)
+2. Set environment variables in Netlify (Site settings → Environment variables → Add a variable):
+   - **`SUPABASE_URL`** – Your Supabase project URL, e.g. `https://abcdefgh.supabase.co` (no trailing slash). Find it in Supabase dashboard → Project Settings → API → Project URL.
+   - **`SUPABASE_SERVICE_ROLE_KEY`** – The **service_role** key (not anon) from Supabase → Project Settings → API → Project API keys → `service_role`. Keep it secret.
+   Redeploy the site after adding or changing these so the functions see the new values.
 3. Build command: `npm run build`; Publish directory: `dist`; Functions: `netlify/functions`.
 
 ## Supabase setup
