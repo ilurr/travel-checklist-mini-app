@@ -23,10 +23,13 @@ function uuid() {
   })
 }
 
+const headers = { 'Content-Type': 'application/json' }
+
 export async function handler(event, context) {
-  if (event.httpMethod !== 'POST') {
-    return { statusCode: 405, body: JSON.stringify({ error: 'Method not allowed' }) }
-  }
+  try {
+    if (event.httpMethod !== 'POST') {
+      return { statusCode: 405, headers, body: JSON.stringify({ error: 'Method not allowed' }) }
+    }
 
   const url = process.env.URL || process.env.DEPLOY_URL || 'https://example.netlify.app'
   const baseUrl = url.replace(/\/$/, '')
@@ -36,6 +39,7 @@ export async function handler(event, context) {
   if (!supabaseUrl || !supabaseKey) {
     return {
       statusCode: 500,
+      headers,
       body: JSON.stringify({ error: 'Server misconfiguration: missing Supabase env' }),
     }
   }
@@ -44,12 +48,12 @@ export async function handler(event, context) {
   try {
     body = JSON.parse(event.body || '{}')
   } catch {
-    return { statusCode: 400, body: JSON.stringify({ error: 'Invalid JSON body' }) }
+    return { statusCode: 400, headers, body: JSON.stringify({ error: 'Invalid JSON body' }) }
   }
 
   const data = body.data
   if (!data || !Array.isArray(data.categories)) {
-    return { statusCode: 400, body: JSON.stringify({ error: 'Missing or invalid data.categories' }) }
+    return { statusCode: 400, headers, body: JSON.stringify({ error: 'Missing or invalid data.categories' }) }
   }
 
   const shareId = uuid()
@@ -72,6 +76,7 @@ export async function handler(event, context) {
     console.error(insertError)
     return {
       statusCode: 500,
+      headers,
       body: JSON.stringify({ error: 'Failed to create share', details: insertError.message }),
     }
   }
@@ -79,12 +84,20 @@ export async function handler(event, context) {
   const shareUrl = `${baseUrl}/#/shared/${shareId}?t=${token}`
   return {
     statusCode: 200,
-    headers: { 'Content-Type': 'application/json' },
+    headers,
     body: JSON.stringify({
       shareUrl,
       expiresAt: expiresAt.toISOString(),
       id: shareId,
       token,
     }),
+  }
+  } catch (err) {
+    console.error('share-create error:', err)
+    return {
+      statusCode: 500,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ error: 'Failed to create share', details: err.message }),
+    }
   }
 }

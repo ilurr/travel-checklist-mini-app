@@ -46,6 +46,11 @@ create table shared_lists (
 
 3. In Project Settings > API, copy **Project URL** and **service_role** key into Netlify env.
 
+## Troubleshooting
+
+- **502 when sharing**: The Netlify function may have crashed. Ensure in Netlify → Site → Environment variables that `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` are set. Ensure the Supabase table `shared_lists` exists with columns: `id` (uuid), `token_hash` (text), `data` (jsonb), `expires_at` (timestamptz), `created_at`, `updated_at`. Redeploy after changing env vars. To test locally with functions, run `netlify dev` instead of `npm run dev`.
+- **"Failed to create share"**: The app now shows the server’s error details when possible. Check the alert message and Netlify function logs (Netlify dashboard → Functions → share-create).
+
 ## Docs
 
 - [Architecture](docs/architecture.md) – data model, API, flows

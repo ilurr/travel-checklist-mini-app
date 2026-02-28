@@ -66,8 +66,13 @@ async function createShare() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ data }),
       })
-      const json = await res.json()
-      if (!res.ok) throw new Error(json.error || 'Failed to create share')
+      let json = {}
+      try {
+        json = await res.json()
+      } catch (_) {
+        throw new Error(`Server error ${res.status}. Check Netlify functions and Supabase.`)
+      }
+      if (!res.ok) throw new Error(json.details ? `${json.error}: ${json.details}` : (json.error || `Failed to create share (${res.status})`))
       shareUrl.value = json.shareUrl || ''
       shareExpiresAt.value = json.expiresAt || ''
       if (json.id && json.token) {
