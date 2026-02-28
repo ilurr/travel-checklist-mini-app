@@ -99,10 +99,18 @@ export function useTrips() {
       destination: (destination || 'New trip').trim(),
       date: d,
       categories: JSON.parse(JSON.stringify(defaultTemplate.categories)),
+      remoteId: null,
+      remoteToken: null,
     }
     trips.value.push(trip)
     currentTripId.value = trip.id
     return trip.id
+  }
+
+  function setCurrentTripShareInfo(remoteId, remoteToken) {
+    if (!currentTrip.value) return
+    currentTrip.value.remoteId = remoteId
+    currentTrip.value.remoteToken = remoteToken
   }
 
   function updateTrip(tripId, { destination, date }) {
@@ -202,5 +210,6 @@ export function useTrips() {
     updateItemQuantity,
     clearAllChecks,
     getCurrentTripData,
+    setCurrentTripShareInfo,
   }
 }

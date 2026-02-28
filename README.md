@@ -3,13 +3,13 @@
 A simple packing checklist for travel (e.g. Umroh, Mecca, holidays). You can create multiple **trips**, each with a **destination** and **date**, and each trip has its own packing list.
 
 - **Personal use**: Data stays in your browser (localStorage). No login, no server.
-- **Share for 7 days**: Optional "Share for 7 days" creates a secret link for the current trip (destination, date, and list); the snapshot is stored in Supabase and expires after 7 days.
+- **Share for 7 days**: One **stable link** per trip. First share creates it; later shares **update** the same link so it always shows the latest version. Both you and the person you shared with can edit and "save" by sharing again (last-write-wins). Rolling 7-day expiry.
 
 ## Tech
 
 - Vue 3 + Vite + Tailwind CSS
 - Netlify (hosting + serverless functions)
-- Supabase (free tier, for temporary shares only)
+- Supabase (free tier, for shared trip snapshots; one row per shared trip, updated on each Share)
 
 ## Run locally
 

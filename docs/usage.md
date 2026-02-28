@@ -10,14 +10,14 @@
 
 Your data never leaves your device unless you use "Share for 7 days".
 
-## Sharing (7-day link)
+## Sharing (stable 7-day link, shared editing)
 
 1. Select the trip you want to share (destination + date + list).
-2. Scroll to **Share this list** and click **Share for 7 days**. The app sends a snapshot of that trip (destination, date, and list) to the server.
-3. A **share link** appears (and can be copied). Example:  
-   `https://your-site.netlify.app/#/shared/abc-123-uuid?t=secretToken`
-4. Send this link to someone (e.g. your wife). They open it in their browser and see the same list (read-only).
-5. The link **expires 7 days** after creation. After that, opening it shows "This shared link has expired."
-6. Your local list is unchanged. You can create a new share link anytime.
+2. Scroll to **Share this list** and click **Share for 7 days**.
+   - **First time**: The app creates a share and shows a **stable link**. The trip is linked to that share (same URL from now on).
+   - **Later**: Clicking Share again **updates** the same link with your current list—no new URL. The link always shows the latest version you saved.
+3. Copy and send the link (e.g. to your wife). Anyone with the link can open it and see the current saved list (read-only in the shared view).
+4. **Both can edit**: If two people have the link, each can edit their local copy and click Share to "save" to the server. **Last write wins**—whoever shares last updates what the link shows. Refresh or reopen the link to see the other person’s updates.
+5. **Rolling 7-day expiry**: Each time someone updates via Share, the link stays valid for 7 more days. If no one updates for 7 days, the link expires.
 
-**Tip**: Treat the link like a password—anyone with it can view the list until it expires.
+**Tip**: Treat the link like a password—anyone with it can view (and, if they use the main app with that trip linked, update) the list until it expires.

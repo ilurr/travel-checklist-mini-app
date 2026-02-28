@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import CategoryList from '../components/CategoryList.vue'
 import SharePanel from '../components/SharePanel.vue'
 import TripSelector from '../components/TripSelector.vue'
@@ -24,6 +24,7 @@ const {
   updateItemQuantity,
   clearAllChecks,
   getCurrentTripData,
+  setCurrentTripShareInfo,
 } = useTrips()
 
 const shareLoading = ref(false)
@@ -36,21 +37,44 @@ try {
 
 async function createShare() {
   const data = getCurrentTripData()
-  if (!data) return
+  if (!data || !currentTrip.value) return
   shareLoading.value = true
   shareUrl.value = ''
   shareExpiresAt.value = ''
   try {
     const base = import.meta.env.VITE_APP_URL || ''
-    const res = await fetch(`${base}/.netlify/functions/share-create`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ data }),
-    })
-    const json = await res.json()
-    if (!res.ok) throw new Error(json.error || 'Failed to create share')
-    shareUrl.value = json.shareUrl || ''
-    shareExpiresAt.value = json.expiresAt || ''
+    const trip = currentTrip.value
+
+    // If this trip already has a remote share, update it; otherwise create a new one.
+    if (trip.remoteId && trip.remoteToken) {
+      const res = await fetch(`${base}/.netlify/functions/share-update`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          id: trip.remoteId,
+          t: trip.remoteToken,
+          data,
+        }),
+      })
+      const json = await res.json()
+      if (!res.ok) throw new Error(json.error || 'Failed to update shared trip')
+      shareExpiresAt.value = json.expiresAt || ''
+      shareUrl.value = `${base}/#/shared/${trip.remoteId}?t=${trip.remoteToken}`
+    } else {
+      const res = await fetch(`${base}/.netlify/functions/share-create`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ data }),
+      })
+      const json = await res.json()
+      if (!res.ok) throw new Error(json.error || 'Failed to create share')
+      shareUrl.value = json.shareUrl || ''
+      shareExpiresAt.value = json.expiresAt || ''
+      if (json.id && json.token) {
+        setCurrentTripShareInfo(json.id, json.token)
+      }
+    }
+
     lastShareUrl.value = shareUrl.value
     try {
       localStorage.setItem('travel-packing-last-share', shareUrl.value)

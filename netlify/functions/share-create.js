@@ -80,6 +80,11 @@ export async function handler(event, context) {
   return {
     statusCode: 200,
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ shareUrl, expiresAt: expiresAt.toISOString() }),
+    body: JSON.stringify({
+      shareUrl,
+      expiresAt: expiresAt.toISOString(),
+      id: shareId,
+      token,
+    }),
   }
 }
