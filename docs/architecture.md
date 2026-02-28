@@ -106,9 +106,10 @@ Retrieves a shared list by id and token.
 
 ## Frontend
 
-- **Router**: Hash mode. Routes: `/` (PackingPage), `/shared/:id` (SharedView, token in `?t=`).
-- **PackingPage**: Uses `useTrips()` composable (localStorage read/write for multiple trips). For "Share for 7 days": if the current trip has `remoteId`/`remoteToken`, calls `share-update`; otherwise calls `share-create` and stores `id`/`token` on the trip. Share URL is stable per trip.
-- **SharedView**: Loads data via `share-get`. **Shared editing enabled**: the list is editable (add/remove categories and items, toggle checkboxes, change quantities). Changes are debounced and pushed to Supabase via `share-update`, so both the share creator and anyone with the link can edit the same list (last-write-wins). Does not use localStorage.
+- **Router**: Hash mode. Routes: `/` and `/shared/:id` (token in `?t=`) both use **PackingPage** (single unified view).
+- **PackingPage** has two modes:
+  - **Local mode** (`/`): Uses `useTrips()` (localStorage, multiple trips, trip selector). "Share for 7 days" calls `share-create` or `share-update` and stores `remoteId`/`remoteToken` on the trip so the share URL is stable.
+  - **Shared mode** (`/shared/:id?t=…`): Loads data via `share-get`; same list UI as local mode. Edits are debounced and saved with `share-update` (Saving…/Saved). No trip selector; no localStorage. Last-write-wins for concurrent editors.
 
 ## Security
 
