@@ -8,6 +8,8 @@ const id = computed(() => route.params.id)
 const token = computed(() => route.query.t)
 
 const categories = ref([])
+const destination = ref('')
+const tripDate = ref('')
 const loading = ref(true)
 const error = ref('')
 const expiresAt = ref('')
@@ -30,7 +32,10 @@ onMounted(async () => {
       loading.value = false
       return
     }
-    categories.value = json.data?.categories || []
+    const data = json.data || {}
+    categories.value = data.categories || []
+    destination.value = data.destination || ''
+    tripDate.value = data.date || ''
     expiresAt.value = json.expiresAt || ''
   } catch (e) {
     console.error(e)
@@ -45,6 +50,9 @@ onMounted(async () => {
   <div class="max-w-3xl mx-auto px-4 py-8">
     <header class="mb-8">
       <h1 class="text-2xl font-bold text-stone-900">Shared Travel Packing List</h1>
+      <p v-if="destination" class="text-lg text-stone-700 mt-1">
+        {{ destination }}<span v-if="tripDate"> — {{ new Date(tripDate).toLocaleDateString() }}</span>
+      </p>
       <p class="text-stone-600 mt-1">View-only snapshot from a shared link.</p>
       <p v-if="expiresAt" class="text-sm text-stone-500 mt-2">
         Link expires: {{ expiresAt ? new Date(expiresAt).toLocaleString() : '' }}

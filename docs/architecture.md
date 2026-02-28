@@ -26,14 +26,25 @@ flowchart LR
 
 ## Data model
 
-### Local / in-memory shape
+### Local storage: trips
 
-Same structure is used in localStorage and in the shared snapshot:
+The app stores an array of **trips**. Each trip has:
+
+- `id` – unique id
+- `destination` – string (e.g. "Travel to Mecca")
+- `date` – ISO date string (e.g. "2026-03-15")
+- `categories` – same structure as below
+
+The current trip id is stored separately so the UI remembers which trip is selected.
+
+### List shape (per trip / shared snapshot)
+
+Same structure is used per-trip in localStorage and in the shared snapshot:
 
 ```json
 {
-  "templateId": "travel",
-  "templateName": "Travel Packing List",
+  "destination": "Travel to Mecca",
+  "date": "2026-03-15",
   "categories": [
     {
       "id": "cat-docs",

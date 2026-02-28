@@ -1,9 +1,9 @@
 # Travel Packing List (Mini App)
 
-A simple packing checklist for travel (e.g. Umroh, holidays). Use it on your device only, or share a 7-day link with someone to view the same list.
+A simple packing checklist for travel (e.g. Umroh, Mecca, holidays). You can create multiple **trips**, each with a **destination** and **date**, and each trip has its own packing list.
 
 - **Personal use**: Data stays in your browser (localStorage). No login, no server.
-- **Share for 7 days**: Optional "Share for 7 days" creates a secret link; the snapshot is stored in Supabase and expires after 7 days.
+- **Share for 7 days**: Optional "Share for 7 days" creates a secret link for the current trip (destination, date, and list); the snapshot is stored in Supabase and expires after 7 days.
 
 ## Tech
 

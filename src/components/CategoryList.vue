@@ -6,7 +6,7 @@ const props = defineProps({
   categories: { type: Array, default: () => [] },
   disabled: { type: Boolean, default: false },
 })
-const emit = defineEmits(['add-category', 'add-item', 'toggle-item', 'remove-item', 'remove-category'])
+const emit = defineEmits(['add-category', 'add-item', 'toggle-item', 'remove-item', 'remove-category', 'update-item-quantity'])
 
 const newCategoryName = ref('')
 
@@ -28,6 +28,7 @@ function submitCategory() {
       @toggle-item="(cid, iid) => $emit('toggle-item', cid, iid)"
       @remove-item="(cid, iid) => $emit('remove-item', cid, iid)"
       @remove-category="(cid) => $emit('remove-category', cid)"
+      @update-item-quantity="(cid, iid, qty) => $emit('update-item-quantity', cid, iid, qty)"
     />
     <form
       v-if="!disabled"

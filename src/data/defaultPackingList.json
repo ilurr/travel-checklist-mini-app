@@ -6,45 +6,45 @@
       "id": "cat-docs",
       "name": "Documents",
       "items": [
-        { "id": "item-passport", "label": "Passport", "checked": false },
-        { "id": "item-visa", "label": "Visa", "checked": false },
-        { "id": "item-tickets", "label": "Flight / travel tickets", "checked": false },
-        { "id": "item-insurance", "label": "Travel insurance", "checked": false }
+        { "id": "item-passport", "label": "Passport", "checked": false, "quantity": 1 },
+        { "id": "item-visa", "label": "Visa", "checked": false, "quantity": 1 },
+        { "id": "item-tickets", "label": "Flight / travel tickets", "checked": false, "quantity": 1 },
+        { "id": "item-insurance", "label": "Travel insurance", "checked": false, "quantity": 1 }
       ]
     },
     {
       "id": "cat-clothing",
       "name": "Clothing",
       "items": [
-        { "id": "item-shirts", "label": "Shirts / tops", "checked": false },
-        { "id": "item-pants", "label": "Pants / bottoms", "checked": false },
-        { "id": "item-underwear", "label": "Underwear", "checked": false },
-        { "id": "item-socks", "label": "Socks", "checked": false }
+        { "id": "item-shirts", "label": "Shirts / tops", "checked": false, "quantity": 1 },
+        { "id": "item-pants", "label": "Pants / bottoms", "checked": false, "quantity": 1 },
+        { "id": "item-underwear", "label": "Underwear", "checked": false, "quantity": 1 },
+        { "id": "item-socks", "label": "Socks", "checked": false, "quantity": 1 }
       ]
     },
     {
       "id": "cat-toiletries",
       "name": "Toiletries",
       "items": [
-        { "id": "item-toothbrush", "label": "Toothbrush & toothpaste", "checked": false },
-        { "id": "item-soap", "label": "Soap / body wash", "checked": false },
-        { "id": "item-deodorant", "label": "Deodorant", "checked": false }
+        { "id": "item-toothbrush", "label": "Toothbrush & toothpaste", "checked": false, "quantity": 1 },
+        { "id": "item-soap", "label": "Soap / body wash", "checked": false, "quantity": 1 },
+        { "id": "item-deodorant", "label": "Deodorant", "checked": false, "quantity": 1 }
       ]
     },
     {
       "id": "cat-electronics",
       "name": "Electronics",
       "items": [
-        { "id": "item-phone", "label": "Phone & charger", "checked": false },
-        { "id": "item-adapter", "label": "Power adapter", "checked": false }
+        { "id": "item-phone", "label": "Phone & charger", "checked": false, "quantity": 1 },
+        { "id": "item-adapter", "label": "Power adapter", "checked": false, "quantity": 1 }
       ]
     },
     {
       "id": "cat-misc",
       "name": "Miscellaneous",
       "items": [
-        { "id": "item-meds", "label": "Medications", "checked": false },
-        { "id": "item-snacks", "label": "Snacks", "checked": false }
+        { "id": "item-meds", "label": "Medications", "checked": false, "quantity": 1 },
+        { "id": "item-snacks", "label": "Snacks", "checked": false, "quantity": 1 }
       ]
     }
   ]
