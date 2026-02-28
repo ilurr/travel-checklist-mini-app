@@ -108,7 +108,7 @@ Retrieves a shared list by id and token.
 
 - **Router**: Hash mode. Routes: `/` (PackingPage), `/shared/:id` (SharedView, token in `?t=`).
 - **PackingPage**: Uses `useTrips()` composable (localStorage read/write for multiple trips). For "Share for 7 days": if the current trip has `remoteId`/`remoteToken`, calls `share-update`; otherwise calls `share-create` and stores `id`/`token` on the trip. Share URL is stable per trip.
-- **SharedView**: Loads data via `share-get`; displays a **read-only snapshot**. Does not write to localStorage or Supabase.
+- **SharedView**: Loads data via `share-get`. **Shared editing enabled**: the list is editable (add/remove categories and items, toggle checkboxes, change quantities). Changes are debounced and pushed to Supabase via `share-update`, so both the share creator and anyone with the link can edit the same list (last-write-wins). Does not use localStorage.
 
 ## Security
 
@@ -131,7 +131,7 @@ High-level rules for how local storage and Supabase interact:
   Each share is identified by `id` and a secret `token` in the URL (`/#/shared/:id?t=token`). Supabase stores only a hash of the token; without the full URL, a share cannot be fetched or updated.
 - **Rolling 7‑day expiry**:  
   Each `share-update` sets `expires_at = now + 7 days`. If no one updates for 7 days, the link expires (HTTP 410). Local trips are unaffected.
-- **Read-only shared view**:  
-  Opening the shared link only reads from Supabase; the SharedView does not write. To edit the shared list, use the main app with a trip that has the same `remoteId`/`remoteToken` (e.g. after an "Import" flow) and click Share to push changes.
+- **Editable shared view**:  
+  Opening the shared link loads the list and allows full editing (categories, items, checkboxes, quantities). Changes are saved automatically to Supabase via `share-update` (debounced). Both the person who created the share and anyone with the link edit the same row; last-write-wins.
 - **No accounts**:  
   There is no authentication; access is controlled entirely by possession of the secret link. Treat share URLs like passwords.
